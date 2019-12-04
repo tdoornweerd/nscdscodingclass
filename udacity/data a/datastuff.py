@@ -98,4 +98,10 @@ print(len(non_udacity_engagement))
 non_udacity_submissions = take_out_udacity(project_submissions)
 print(len(non_udacity_submissions))
 
-LESSON 14######################################################################################################################################################
+#LESSON 14######################################################################################################################################################
+#only look at students engement from the first week and dont look at students who quit after a week
+#create dictionary of students who havent cancelled (days to cancell = none) and stayed enrolled for more than 7 days (days to cancell = >7)
+#key = account key and value = enrollment date|| dic name = paid students 
+
+paid_students = dict()
+for 
