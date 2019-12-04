@@ -102,12 +102,16 @@ non_udacity_submissions = take_out_udacity(project_submissions)
 #only look at students engement from the first week and dont look at students who quit after a week
 #create dictionary of students who havent cancelled (days to cancell = none) and stayed enrolled for more than 7 days (days to cancell = >7)
 #key = account key and value = enrollment date|| dic name = paid students 
+#only add if most recent or if new
+
 paid_students = {}
 for i in range(len(non_udacity_enrollments)):
     if non_udacity_enrollments[i]['days_to_cancel'] == None:
-        paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
+        if non_udacity_enrollments[i]['account_key'] not in paid_students or non_udacity_enrollments[i]['join_date'] > paid_students[non_udacity_enrollments[i]['account_key']]:
+            paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
     elif non_udacity_enrollments[i]['days_to_cancel'] != None and non_udacity_enrollments[i]['days_to_cancel'] > 7:
-        paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
+        if non_udacity_enrollments[i]['account_key'] not in paid_students or non_udacity_enrollments[i]['join_date'] > paid_students[non_udacity_enrollments[i]['account_key']]:
+            paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
 
 
 print(len(paid_students))
