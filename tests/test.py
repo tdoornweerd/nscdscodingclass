@@ -1,10 +1,9 @@
-students = set([1,2,3,4,5])
-the_list = [7,8,5,9,10,1,1,1,1]
-newandbetter_list = []
+list1 = ['one','two','three','four','five','six']
+list2 = [1,2,3,4,5,6]
 
-for i in range(len(the_list)):
-    if the_list[i] not in students:
-        newandbetter_list.append(the_list[i])
+dictionary1 = dict()
 
-print(the_list)
-print(newandbetter_list)
+for i in range(len(list1)):
+    dictionary1[list1[i]] = list2[i]
+
+print(dictionary1)

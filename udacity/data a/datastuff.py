@@ -80,7 +80,7 @@ test_accounts = set()
 for i in range(len(enrollments)):
     if enrollments[i]['is_udacity'] == 'True':
         test_accounts.add(enrollments[i]['account_key'])
-print(test_accounts)
+#print(test_accounts)
 
 
 def take_out_udacity(data):
@@ -92,16 +92,22 @@ def take_out_udacity(data):
 
 
 non_udacity_enrollments = take_out_udacity(enrollments)
-print(len(non_udacity_enrollments))
+#print(len(non_udacity_enrollments))
 non_udacity_engagement = take_out_udacity(daily_engagement)
-print(len(non_udacity_engagement))
+#print(len(non_udacity_engagement))
 non_udacity_submissions = take_out_udacity(project_submissions)
-print(len(non_udacity_submissions))
+#print(len(non_udacity_submissions))
 
 #LESSON 14######################################################################################################################################################
 #only look at students engement from the first week and dont look at students who quit after a week
 #create dictionary of students who havent cancelled (days to cancell = none) and stayed enrolled for more than 7 days (days to cancell = >7)
 #key = account key and value = enrollment date|| dic name = paid students 
+paid_students = {}
+for i in range(len(non_udacity_enrollments)):
+    if non_udacity_enrollments[i]['days_to_cancel'] == None:
+        paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
+    elif non_udacity_enrollments[i]['days_to_cancel'] != None and non_udacity_enrollments[i]['days_to_cancel'] > 7:
+        paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
 
-paid_students = dict()
-for 
+
+print(len(paid_students))
