@@ -99,5 +99,3 @@ non_udacity_submissions = take_out_udacity(project_submissions)
 print(len(non_udacity_submissions))
 
 LESSON 14######################################################################################################################################################
-
-print('hello world')
