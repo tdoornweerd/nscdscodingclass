@@ -118,9 +118,28 @@ for i in range(len(non_udacity_enrollments)):
 
 #print(len(paid_students))
 
-
+paid_engagement_in_first_week = []
 def within_one_week(join_date, engagement_date):
     time_delta = engagement_date - join_date
     return time_delta.days < 7
 
-print(within_one_week(non_udacity_enrollments[10]['join_date'],non_udacity_engagement[10]['utc_date']))
+def take_out_free(data):
+    new_data = []
+    for data_point in data:
+        if data_point['account_key'] in paid_students:
+            new_data.append(data_point)
+    return new_data
+
+paid_enrollments = take_out_free(non_udacity_enrollments)
+paid_engagement = take_out_free(non_udacity_engagement)
+paid_submissions = take_out_free(non_udacity_submissions)
+
+#for engagement in non_udacity_engagement:
+#    engagement_date = engagement['utc_date']
+#    account_key = engagement['account_key']
+#    join_date = non_udacity_enrollments['join_date']
+#    
+#    if account_key in paid_students and within_one_week(join_date,engagement_date) == True:
+#        paid_engagement_in_first_week.append(non_udacity_engagement[i])
+#
+#print(len(paid_engagement_in_first_week))
