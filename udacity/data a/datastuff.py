@@ -42,6 +42,8 @@ for enrollment in enrollments:
     enrollment['cancel_date'] = parse_date(enrollment['cancel_date'])
     enrollment['days_to_cancel'] = parse_maybe_int(enrollment['days_to_cancel'])
     enrollment['join_date'] = parse_date(enrollment['join_date'])
+for engement in daily_engagement:
+    engement['utc_date'] = parse_date(engement['utc_date'])
 
 #######################################################################################################################################################
 def unique_student_finder(logs):
@@ -114,4 +116,11 @@ for i in range(len(non_udacity_enrollments)):
             paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
 
 
-print(len(paid_students))
+#print(len(paid_students))
+
+
+def within_one_week(join_date, engagement_date):
+    time_delta = engagement_date - join_date
+    return time_delta.days < 7
+
+print(within_one_week(non_udacity_enrollments[10]['join_date'],non_udacity_engagement[10]['utc_date']))
