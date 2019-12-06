@@ -107,13 +107,13 @@ non_udacity_submissions = take_out_udacity(project_submissions)
 #only add if most recent or if new
 
 paid_students = {}
-for i in range(len(non_udacity_enrollments)):
-    if non_udacity_enrollments[i]['days_to_cancel'] == None:
-        if non_udacity_enrollments[i]['account_key'] not in paid_students or non_udacity_enrollments[i]['join_date'] > paid_students[non_udacity_enrollments[i]['account_key']]:
-            paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
-    elif non_udacity_enrollments[i]['days_to_cancel'] != None and non_udacity_enrollments[i]['days_to_cancel'] > 7:
-        if non_udacity_enrollments[i]['account_key'] not in paid_students or non_udacity_enrollments[i]['join_date'] > paid_students[non_udacity_enrollments[i]['account_key']]:
-            paid_students[non_udacity_enrollments[i]['account_key']] = non_udacity_enrollments[i]['join_date']
+for enrollment in non_udacity_enrollments:
+    if (not enrollment['is_canceled'] or enrollment['days_to_cancel'] == None or enrollment['days_to_cancel'] > 7):
+        account_key = enrollment['account_key']
+        enrollment_date = enrollment['join_date']
+        if (account_key not in paid_students or
+                enrollment_date > paid_students[account_key]):
+            paid_students[account_key] = enrollment_date
 
 
 #print(len(paid_students))
@@ -123,23 +123,18 @@ def within_one_week(join_date, engagement_date):
     time_delta = engagement_date - join_date
     return time_delta.days < 7
 
-def take_out_free(data):
-    new_data = []
-    for data_point in data:
-        if data_point['account_key'] in paid_students:
-            new_data.append(data_point)
-    return new_data
 
-paid_enrollments = take_out_free(non_udacity_enrollments)
-paid_engagement = take_out_free(non_udacity_engagement)
-paid_submissions = take_out_free(non_udacity_submissions)
+def find_account_key(data_set,key):
+    for data in data_set:
+        if key == data['account_key']:
+            return data['join_date']
 
-#for engagement in non_udacity_engagement:
-#    engagement_date = engagement['utc_date']
-#    account_key = engagement['account_key']
-#    join_date = non_udacity_enrollments['join_date']
-#    
-#    if account_key in paid_students and within_one_week(join_date,engagement_date) == True:
-#        paid_engagement_in_first_week.append(non_udacity_engagement[i])
-#
-#print(len(paid_engagement_in_first_week))
+
+for engagement in non_udacity_engagement:
+    engagement_date = engagement['utc_date']
+    account_key = engagement['account_key']
+    join_date = find_account_key(non_udacity_enrollments,account_key)
+    if account_key in paid_students and within_one_week(join_date,engagement_date) == True:
+        paid_engagement_in_first_week.append(non_udacity_engagement[i])
+
+print(len(paid_engagement_in_first_week))
