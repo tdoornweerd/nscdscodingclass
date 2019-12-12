@@ -1,5 +1,5 @@
 import numpy as np
-
+#'''
 np.max() = max value
 np.argmax() = position of max value
 np.dtype = element type
@@ -32,3 +32,6 @@ a = np.array([1,2,3,4,5])
 b = np.array([False,False,True,True,True])
 a[b] == 3,4,5
 a[a>2] == 3,4,5
+
+
+'''
