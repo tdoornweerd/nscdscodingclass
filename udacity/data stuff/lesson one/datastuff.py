@@ -118,23 +118,34 @@ for enrollment in non_udacity_enrollments:
 
 #print(len(paid_students))
 
+
+
+def remove_free_trial_cancel(data):
+    new_data = []
+    for data_point in data:
+        if data_point['account_key'] in paid_students:
+            new_data.append(data_point)
+    return new_data
+
+paid_enrollments = remove_free_trial_cancel(non_udacity_enrollments)
+paid_engagement = remove_free_trial_cancel(non_udacity_engagement)
+paid_submissions = remove_free_trial_cancel(non_udacity_submissions)
+
+def find_account_key(data_set,key):
+    if key in data_set:
+        return key
+
 paid_engagement_in_first_week = []
 def within_one_week(join_date, engagement_date):
     time_delta = engagement_date - join_date
     return time_delta.days < 7
 
-
-def find_account_key(data_set,key):
-    for data in data_set:
-        if key == data['account_key']:
-            return data['join_date']
-
-
-for engagement in non_udacity_engagement:
+for engagement in paid_engagement:
     engagement_date = engagement['utc_date']
     account_key = engagement['account_key']
-    join_date = find_account_key(non_udacity_enrollments,account_key)
+    join_date = find_account_key(paid_students,account_key)
+    print(engagement,)
     if account_key in paid_students and within_one_week(join_date,engagement_date) == True:
-        paid_engagement_in_first_week.append(non_udacity_engagement[i])
+        paid_engagement_in_first_week.append(engagement)
 
 print(len(paid_engagement_in_first_week))
