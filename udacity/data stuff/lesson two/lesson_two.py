@@ -1,5 +1,5 @@
 import numpy as np
-
+import pandas as pd
 
 
 # First 20 countries with employment data
@@ -128,7 +128,55 @@ def mean_time_for_paid_students(time_spent, days_to_cancel):
 print(mean_time_for_paid_students(time_spent,days_to_cancel))
 
 
-Lesson 5
+Lesson 5 (10)
 
 '''
 
+countries = ['Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda',
+             'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan',
+             'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus',
+             'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia']
+
+life_expectancy_values = [74.7,  75. ,  83.4,  57.6,  74.6,  75.4,  72.3,  81.5,  80.2,
+                          70.3,  72.1,  76.4,  68.1,  75.2,  69.8,  79.4,  70.8,  62.7,
+                          67.3,  70.6]
+
+gdp_values = [ 1681.61390973,   2155.48523109,  21495.80508273,    562.98768478,
+              13495.1274663 ,   9388.68852258,   1424.19056199,  24765.54890176,
+              27036.48733192,   1945.63754911,  21721.61840978,  13373.21993972,
+                483.97086804,   9783.98417323,   2253.46411147,  25034.66692293,
+               3680.91642923,    366.04496652,   1175.92638695,   1132.21387981]
+
+# Life expectancy and gdp data in 2007 for 20 countries
+life_expectancy = pd.Series(life_expectancy_values)
+gdp = pd.Series(gdp_values)
+
+
+def variable_correlation(gdp, life_expectancy):
+    gdp_above = []
+    life_above = []
+
+    for i in gdp:
+        if i >= gdp.mean():
+            gdp_above.append(True)
+        else:
+            gdp_above.append(False)
+    
+    for i in life_expectancy:
+        if i >= life_expectancy.mean():
+            life_above.append(True)
+        else:
+            life_above.append(False)
+
+    num_same_direction = []
+    num_different_direction = []
+
+    for i in range(len(gdp_above)):
+        if gdp_above[i] == life_above[i]:
+            num_same_direction.append(True)
+        else:
+            num_different_direction.append(False)
+
+    return (len(num_same_direction), len(num_different_direction))
+
+print(variable_correlation(gdp, life_expectancy))
