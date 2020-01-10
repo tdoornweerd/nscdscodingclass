@@ -64,4 +64,5 @@ use axis = 0 to calculate data for a colomn and axis = 1 for row. Ex(mean(axis =
 for dataframs (good for CSV files)
 use .loc to acess rows by indexes and .iloc to get rows by possition to get position you can use .loc or .iloc but give row and position
 can use .value to get a numpy array of just the values
-'''
+
+df.applymap applies a function to the specified row or column in the data frame
