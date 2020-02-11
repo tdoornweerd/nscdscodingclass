@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import matplotlib as mpl
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 # First 20 countries with employment data
 '''
 countries = np.array([
@@ -376,8 +376,8 @@ def get_hourly_entries_and_exits(entries_and_exits):
 
     return entries_and_exits - shifted
 get_hourly_entries_and_exits(entries_and_exits)
-'''
 
+#lesson 11
 
 grades_df = pd.DataFrame(
     data={'exam1': [43, 81, 78, 75, 89, 70, 91, 65, 98, 87],
@@ -400,3 +400,67 @@ def convert_grades(grades):
     return letter
 
 print(grades_df.applymap(convert_grades))
+
+import pandas as pd
+grades_df = pd.DataFrame(
+    data={'exam1': [43, 81, 78, 75, 89, 70, 91, 65, 98, 87],
+          'exam2': [24, 63, 56, 56, 67, 51, 79, 46, 72, 60]},
+    index=['Andre', 'Barry', 'Chris', 'Dan', 'Emilio', 
+           'Fred', 'Greta', 'Humbert', 'Ivan', 'James']
+)
+def standardize(df):
+    new = (df-df.mean())/df.std(ddof=0)
+    return pd.qcut(new,
+                       [0, 0.1, 0.2, 0.5, 0.8, 1],
+                       labels=['F', 'D', 'C', 'B', 'A'])
+
+print(grades_df.apply(standardize))
+
+
+df = pd.DataFrame({
+    'a': [4, 5, 3, 1, 2],
+    'b': [20, 10, 40, 50, 30],
+    'c': [25, 20, 5, 15, 10],
+    'd': [3,12,34,777,105]
+})
+
+def second_largest(line):
+    sorted_line = line.sort_values(inplace=False)
+    return sorted_line.iloc[-2]
+
+print(df.apply(second_largest))
+
+ 
+grades_df = pd.DataFrame(
+    data={'exam1': [43, 81, 78, 75, 89, 70, 91, 65, 98, 87],
+          'exam2': [24, 63, 56, 56, 67, 51, 79, 46, 72, 60]},
+    index=['Andre', 'Barry', 'Chris', 'Dan', 'Emilio', 
+           'Fred', 'Greta', 'Humbert', 'Ivan', 'James']
+)
+
+grade = pd.DataFrame(
+    {0: [95, 85, 75, 65, 55], 1: [94, 84, 74, 64, 54]},
+    index=[0, 1, 2, 3, 4]
+)
+
+
+def standardize(df):
+    final = (df - df.mean())/df.std(ddof = 0)
+    return final
+
+#print(standardize(grades_df))
+
+def standardize_row(df):
+    df_mean = df.mean(axis = 'columns')
+    subtracted = df.sub(df_mean, axis = 'index')
+    final = subtracted.div(df.std(axis = 'columns', ddof = 0), axis = 'index')
+    return final
+
+print(standardize_row(grades_df))
+'''
+pd.set_option('display.max_columns', None)
+subway_df = pd.read_csv('nyc_subway_weather.csv')
+#print(subway_df.groupby('ENTRIESn').sum()['fog'])
+test = subway_df.groupby('DATEn').sum()['ENTRIESn'].plot()
+#plt.plot(test)
+plt.show()
