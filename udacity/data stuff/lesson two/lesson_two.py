@@ -457,10 +457,75 @@ def standardize_row(df):
     return final
 
 print(standardize_row(grades_df))
-'''
+
+#lession 16 GROUPBY
 pd.set_option('display.max_columns', None)
 subway_df = pd.read_csv('nyc_subway_weather.csv')
-#print(subway_df.groupby('ENTRIESn').sum()['fog'])
-test = subway_df.groupby('DATEn').sum()['ENTRIESn'].plot()
-#plt.plot(test)
+
+test = subway_df.groupby('day_week').mean()['ENTRIESn_hourly'].plot()
 plt.show()
+
+#17
+ridership_df = pd.DataFrame({
+    'UNIT': ['R051', 'R079', 'R051', 'R079', 'R051', 'R079', 'R051', 'R079', 'R051'],
+    'TIMEn': ['00:00:00', '02:00:00', '04:00:00', '06:00:00', '08:00:00', '10:00:00', '12:00:00', '14:00:00', '16:00:00'],
+    'ENTRIESn': [3144312, 8936644, 3144335, 8936658, 3144353, 8936687, 3144424, 8936819, 3144594],
+    'EXITSn': [1088151, 13755385,  1088159, 13755393,  1088177, 13755598, 1088231, 13756191,  1088275]
+})
+
+def difference(i):
+    return i - i.shift(periods = 1)
+
+def get_hourly_entries_and_exits(ridership):
+    new = ridership.groupby('UNIT')[['ENTRIESn','EXITSn']].apply(difference)
+    return new
+
+print(get_hourly_entries_and_exits(ridership_df))
+
+
+subway_df = pd.DataFrame({
+    'UNIT': ['R003', 'R003', 'R003', 'R003', 'R003', 'R004', 'R004', 'R004',
+             'R004', 'R004'],
+    'DATEn': ['05-01-11', '05-02-11', '05-03-11', '05-04-11', '05-05-11',
+              '05-01-11', '05-02-11', '05-03-11', '05-04-11', '05-05-11'],
+    'hour': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ENTRIESn': [ 4388333,  4388348,  4389885,  4391507,  4393043, 14656120,
+                 14656174, 14660126, 14664247, 14668301],
+    'EXITSn': [ 2911002,  2911036,  2912127,  2913223,  2914284, 14451774,
+               14451851, 14454734, 14457780, 14460818],
+    'latitude': [ 40.689945,  40.689945,  40.689945,  40.689945,  40.689945,
+                  40.69132 ,  40.69132 ,  40.69132 ,  40.69132 ,  40.69132 ],
+    'longitude': [-73.872564, -73.872564, -73.872564, -73.872564, -73.872564,
+                  -73.867135, -73.867135, -73.867135, -73.867135, -73.867135]
+})
+
+weather_df = pd.DataFrame({
+    'DATEn': ['05-01-11', '05-01-11', '05-02-11', '05-02-11', '05-03-11',
+              '05-03-11', '05-04-11', '05-04-11', '05-05-11', '05-05-11'],
+    'hour': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'latitude': [ 40.689945,  40.69132 ,  40.689945,  40.69132 ,  40.689945,
+                  40.69132 ,  40.689945,  40.69132 ,  40.689945,  40.69132 ],
+    'longitude': [-73.872564, -73.867135, -73.872564, -73.867135, -73.872564,
+                  -73.867135, -73.872564, -73.867135, -73.872564, -73.867135],
+    'pressurei': [ 30.24,  30.24,  30.32,  30.32,  30.14,  30.14,  29.98,  29.98,
+                   30.01,  30.01],
+    'fog': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'rain': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'tempi': [ 52. ,  52. ,  48.9,  48.9,  54. ,  54. ,  57.2,  57.2,  48.9,  48.9],
+    'wspdi': [  8.1,   8.1,   6.9,   6.9,   3.5,   3.5,  15. ,  15. ,  15. ,  15. ]
+})
+
+def combine_dfs(subway_df, weather_df):
+    test = subway_df.merge(weather_df,on = ['DATEn','latitude','longitude','hour'], how = 'inner')
+    return test
+print(combine_dfs(subway_df,weather_df))
+
+19
+'''
+
+subway_df = pd.read_csv('nyc_subway_weather.csv')
+subway = subway_df.groupby(['longitude','latitude'], as_index = False).mean()
+print(subway)
+plt.scatter(subway['latitude'],subway['longitude'],s = subway['ENTRIESn_hourly'])
+plt.show()
+
