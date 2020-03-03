@@ -1,11 +1,11 @@
 var canvas = document.querySelector('canvas');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth-100;
+canvas.height = window.innerHeight-100;
 var c = canvas.getContext('2d');
 
 
 var gravity =1;
-var yfriction = .83;
+var yfriction = .9;
 var xfriction = .97;
 var distancetillmove = 100;
 var moveddistance = 30;
@@ -52,10 +52,10 @@ class gravityBall extends ball {
         this.update()
     };
     update() {
-        if (this.y + this.radias > canvas.height ) {
-            this.dy = -this.dy * yfriction;
+        if (this.y + this.radias >= canvas.height ) {
             this.y = canvas.height - this.radias;
-            console.log(this.dy, this.y);
+            var newDy = -this.dy*yfriction;
+            this.dy = newDy+this.dy < .5?0:Math.round(newDy);
         } else {
             this.dy += gravity;
         };
@@ -98,13 +98,14 @@ var balls;
 var ballArray = [];
 function init() {
     mouseCircle = new mouseBall(undefined,undefined,50,'green')
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 100; i++) {
         var ranx = random(canvas.width);
         var rany = random(canvas.height)-75;
         var ranradias = random(75);
         var rancolor = 'rgb('+random(255)+', '+random(255)+', '+random(255)+')'
         var ranspeedy = ranrange(20,30)
         var ranspeedx = ranrange(-20,20)
+        console.log(rany,ranradias);
         ballArray.push(new gravityBall(ranx,rany,ranradias,rancolor,ranspeedy,ranspeedx))
     };
     //balls = new gravityBall(300,canvas.height-700,50,'red',10,50)
@@ -112,7 +113,6 @@ function init() {
 
 
 function animate() {
-    requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
     for (var i = 0; i < ballArray.length; i++) {
         //getDistance(mouseCircle.x,mouseCircle.y,ballArray[i]);
@@ -121,6 +121,13 @@ function animate() {
     mouseCircle.update();
     //balls.update();
     //getDistance(mouseCircle.x,mouseCircle.y,balls)
+    //setTimeout(
+        //function(){
+            requestAnimationFrame(animate);
+        //},
+      //  1000
+    //)
+    
 };
 
 init();
