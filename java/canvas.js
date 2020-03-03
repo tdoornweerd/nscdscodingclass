@@ -5,7 +5,8 @@ var c = canvas.getContext('2d');
 
 
 var gravity =1;
-var friction = .80;
+var yfriction = .93;
+var xfriction = .97;
 var distancetillmove = 100;
 var moveddistance = 30;
 
@@ -44,19 +45,24 @@ class ball {
 };
 
 class gravityBall extends ball {
-    constructor(x,y,radias,color,dy) {
+    constructor(x,y,radias,color,dy,dx) {
         super(x,y,radias,color);
         this.dy = dy;
+        this.dx = dx;
         this.update()
     };
     update() {
         if (this.y + this.radias > canvas.height ) {
-            this.dy = -this.dy * friction;
+            this.dy = -this.dy * yfriction;
             this.y = canvas.height - this.radias;
         } else {
             this.dy += gravity;
         };
         this.y += this.dy;
+        if (this.x + this.radias > canvas.width || this.x - this.radias < 0) {
+            this.dx = -this.dx * xfriction;
+        }
+        this.x += this.dx;
         this.draw()
     };
     tooclose() {
@@ -90,15 +96,16 @@ var balls;
 var ballArray = [];
 function init() {
     mouseCircle = new mouseBall(undefined,undefined,50,'green')
-    /*for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 100; i++) {
         var ranx = random(canvas.width);
         var rany = random(canvas.height)-75;
         var ranradias = random(75);
         var rancolor = 'rgb('+random(255)+', '+random(255)+', '+random(255)+')'
-        var ranspeed = ranrange(30,30)
-        ballArray.push(new gravityBall(ranx,rany,ranradias,rancolor,ranspeed))
-    };*/
-    balls = new gravityBall(300,canvas.height-700,50,'red',10)
+        var ranspeedy = ranrange(20,30)
+        var ranspeedx = ranrange(-20,20)
+        ballArray.push(new gravityBall(ranx,rany,ranradias,rancolor,ranspeedy,ranspeedx))
+    };
+    //balls = new gravityBall(300,canvas.height-700,50,'red',10,50)
 };
 
 
@@ -106,14 +113,14 @@ function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
     for (var i = 0; i < ballArray.length; i++) {
-        getDistance(mouseCircle.x,mouseCircle.y,ballArray[i]);
+        //getDistance(mouseCircle.x,mouseCircle.y,ballArray[i]);
         ballArray[i].update();
     };
     mouseCircle.update();
     balls.update();
-    getDistance(mouseCircle.x,mouseCircle.y,balls)
+    //getDistance(mouseCircle.x,mouseCircle.y,balls)
 };
 
 init();
 animate();
- Test
+
