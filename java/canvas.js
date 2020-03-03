@@ -55,10 +55,12 @@ class gravityBall extends ball {
         if (this.y + this.radias > canvas.height ) {
             this.dy = -this.dy * yfriction;
             this.y = canvas.height - this.radias;
+            console.log(this.dy, this.y);
         } else {
             this.dy += gravity;
         };
         this.y += this.dy;
+        
         if (this.x + this.radias > canvas.width || this.x - this.radias < 0) {
             this.dx = -this.dx * xfriction;
         }
@@ -96,7 +98,7 @@ var balls;
 var ballArray = [];
 function init() {
     mouseCircle = new mouseBall(undefined,undefined,50,'green')
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 1; i++) {
         var ranx = random(canvas.width);
         var rany = random(canvas.height)-75;
         var ranradias = random(75);
@@ -117,7 +119,7 @@ function animate() {
         ballArray[i].update();
     };
     mouseCircle.update();
-    balls.update();
+    //balls.update();
     //getDistance(mouseCircle.x,mouseCircle.y,balls)
 };
 
