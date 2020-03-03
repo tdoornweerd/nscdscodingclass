@@ -6,6 +6,8 @@ var c = canvas.getContext('2d');
 
 var gravity =1;
 var friction = .80;
+var distancetillmove = 100;
+var moveddistance = 30;
 
 let mouse = {
     x: innerWidth / 2,
@@ -46,28 +48,40 @@ class gravityBall extends ball {
         super(x,y,radias,color);
         this.dy = dy;
         this.update()
-    }
+    };
     update() {
         if (this.y + this.radias > canvas.height ) {
             this.dy = -this.dy * friction;
             this.y = canvas.height - this.radias;
         } else {
             this.dy += gravity;
-        }
+        };
         this.y += this.dy;
         this.draw()
     };
+    tooclose() {
+        this.dy = moveddistance;
+    }
 };
 
 class mouseBall extends ball {
     constructor (x,y,radias,color) {
         super(x,y,radias,color)
         this.update()
-    }
+    };
     update() {
         this.x = mouse.x;
         this.y = mouse.y;
         this.draw()
+    };
+};
+
+function getDistance (x1,y1,movedball) {
+    let xdistance = movedball.x - x1;
+    let ydistance = movedball.y - y1;
+    totalDistance = Math.sqrt(Math.pow(xdistance,2) + Math.pow(ydistance,2));
+    if (totalDistance < distancetillmove) {
+        movedball.tooclose()
     }
 };
 
@@ -76,7 +90,7 @@ var balls;
 var ballArray = [];
 function init() {
     mouseCircle = new mouseBall(undefined,undefined,50,'green')
-    /*=for (var i = 0; i < 100; i++) {
+    /*for (var i = 0; i < 100; i++) {
         var ranx = random(canvas.width);
         var rany = random(canvas.height)-75;
         var ranradias = random(75);
@@ -92,10 +106,12 @@ function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0,0,canvas.width,canvas.height);
     for (var i = 0; i < ballArray.length; i++) {
+        getDistance(mouseCircle.x,mouseCircle.y,ballArray[i]);
         ballArray[i].update();
     };
-    mouseCircle.update()
+    mouseCircle.update();
     balls.update();
+    getDistance(mouseCircle.x,mouseCircle.y,balls)
 };
 
 init();
