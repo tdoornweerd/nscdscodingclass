@@ -5,7 +5,7 @@ var c = canvas.getContext('2d');
 
 
 var gravity =1;
-var yfriction = .93;
+var yfriction = .83;
 var xfriction = .97;
 var distancetillmove = 100;
 var moveddistance = 30;
@@ -60,7 +60,7 @@ class gravityBall extends ball {
             this.dy += gravity;
         };
         this.y += this.dy;
-        
+
         if (this.x + this.radias > canvas.width || this.x - this.radias < 0) {
             this.dx = -this.dx * xfriction;
         }
